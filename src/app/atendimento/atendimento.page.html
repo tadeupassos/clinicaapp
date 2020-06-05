@@ -1,0 +1,103 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button [routerLink]="['/tabs']">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Sessão</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-row>
+      <ion-col size="12">
+        Paciente:  <span class="textoLeitura">{{ sessao.nomePaciente }}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        Horário:  <span class="textoLeitura">{{ sessao.diaSemana }}, {{ sessao  .horaSessao }}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="numeroGuia != ''">
+      <ion-col size="10">
+        Número da Guia:  <span class="textoLeitura">{{ sessao.numeroGuia }}</span>
+      </ion-col>
+    </ion-row> 
+  </ion-card>
+  
+    <form [formGroup]="fGroup" class="ion-padding">
+      <ion-row>
+        <ion-col size="12">
+          <ion-text><h5>Frequência <ion-text color="danger">*</ion-text></h5></ion-text>
+          <select formControlName="frequencia" class="campo">
+            <option>Presença</option>
+            <option>Falta</option>
+            <option>Falta Justificada</option>
+            <option>Falta do Terapeuta</option>
+            <option>Feriado</option>
+          </select>
+          <div class="mensagemValidacao" *ngIf="fGroup.controls.frequencia.errors">
+            <span *ngIf="fGroup.controls.frequencia.errors.required && fGroup.controls.frequencia.touched">
+              Esse campo é obrigatório
+            </span>
+          </div>   
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12" *ngIf="mostrarConteudoEvolucao">
+          <ion-text><h5>Conteúdo <ion-text color="danger">*</ion-text></h5></ion-text>
+          <select formControlName="conteudo" class="campo">
+            <option>Conversa</option>
+            <option>Desenho</option>
+            <option>Jogos</option>
+            <option>Caixa Lúdica</option>
+            <option>Teste</option>
+            <option>Outros</option>
+          </select>
+          <div class="mensagemValidacao" *ngIf="fGroup.controls.conteudo.errors">
+            <span *ngIf="fGroup.controls.conteudo.errors.required && fGroup.controls.conteudo.touched">
+              Esse campo é obrigatório
+            </span>
+          </div>   
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="mostrarCampoOutros">    
+        <ion-col size="12">
+          <ion-text><h5 style="margin-bottom: 10px;">Outros: <ion-text color="danger">*</ion-text></h5></ion-text>
+          <ion-input  type="text" formControlName="outros" class="campo"></ion-input>
+          <div class="mensagemValidacao" *ngIf="fGroup.controls.outros.errors">
+            <span *ngIf="fGroup.controls.outros.errors.required && fGroup.controls.outros.touched">Esse campo é obrigatório</span>
+          </div>
+        </ion-col>    
+      </ion-row>
+
+      <ion-row>    
+        <ion-col size="12" *ngIf="mostrarConteudoEvolucao">
+          <ion-text><h5>Evolução: <ion-text color="danger">*</ion-text></h5></ion-text>
+          <ion-textarea rows="2" cols="20" formControlName="evolucao" class="evolucao"></ion-textarea>
+          <div class="mensagemValidacao" *ngIf="fGroup.controls.evolucao.errors">
+            <span *ngIf="fGroup.controls.evolucao.errors.required && fGroup.controls.evolucao.touched">Esse campo é obrigatório</span>
+          </div>
+        </ion-col>    
+      </ion-row>
+    </form>
+
+  <ion-row>
+    <ion-col size="12">
+      <ion-button [disabled]="!fGroup.valid" (click)="salvarDados()" expand="block">
+        Gravar Dados
+      </ion-button>
+    </ion-col>
+    <ion-col>
+      
+    </ion-col>
+  </ion-row> 
+
+</ion-content>

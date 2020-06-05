@@ -1,21 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { SessaoService } from '../services/sessao.service';
 import { Subscription } from 'rxjs';
 import { Sessao } from '../interfaces/sessao';
-import { SessaoService } from '../services/sessao.service';
-import { NavController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+  selector: 'app-sessoes-passada',
+  templateUrl: './sessoes-passada.page.html',
+  styleUrls: ['./sessoes-passada.page.scss'],
 })
-export class Tab1Page {
+export class SessoesPassadaPage implements OnInit {
 
-  public pacienteId: string = null;
   public sessaoSubscription: Subscription;  
   public sessoes = new Array<Sessao>();
-  public nomePaciente = "";
-  public atendimento = "";
   public nomePsicologo = "";
   public crp = "";
 
@@ -32,7 +29,7 @@ export class Tab1Page {
     this.sessaoSubscription = this.sessaoService.getSessoes(this.crp).subscribe(data => {
       //this.sessoes = data;
       this.sessoes = data.filter((f:Sessao) => {
-        return f.frequencia == "";
+        return f.frequencia != "";
       });
       console.log("this.sessoes",this.sessoes);
 
@@ -45,13 +42,7 @@ export class Tab1Page {
     });
   }
 
-  sair(){
-    localStorage.clear();
-    this.navCtrl.navigateBack("/login");
+  ngOnInit() {
   }
-
-  ngOndestroy() {
-    if(this.sessaoSubscription) this.sessaoSubscription.unsubscribe();
-  } 
 
 }

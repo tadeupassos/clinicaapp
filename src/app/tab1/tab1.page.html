@@ -1,17 +1,46 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="end">
+      <ion-button (click)="sair()">
+        Sair
+      </ion-button>
+    </ion-buttons>
     <ion-title>
-      Tab 1
+      Sessões
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card *ngFor="let s of sessoes" [routerLink]="['/tabs/atendimento',s.id]">
+    <ion-row class="margemDeCima">
+      <ion-col size="8" class="horario flex-left">
+        {{ s.diaSemana }}, {{ s.horaSessao }}
+      </ion-col>
+      <ion-col size="4" class="dataSessao flex-right">
+        {{ s.dataSessao }}
+      </ion-col>
+    </ion-row>
+    <ion-row class="margemDeBaixo">
+      <ion-col size="12" class="paciente flex-left">
+        {{ s.nomePaciente }}
+      </ion-col>
+      <!-- <ion-col size="4" class="dataSessao flex-left">
+        <span class="convenio" *ngIf="s.numeroGuia != ''">Convênio</span>
+        <span class="particular" *ngIf="s.numeroGuia == ''">Particular</span>
+      </ion-col> -->
+    </ion-row>
+  </ion-card>
+<!-- 
+  <ion-list>
+    <ion-item *ngFor="let s of sessoes">
+      <ion-label>
+        <div><span class="horario">{{ s.diaSemana }}, {{ s.horaSessao }}</span> - <span class="dataSessao">{{ s.dataSessao }}</span></div>
+        <h2 class="paciente">
+          {{ s.nomePaciente }} - <span class="convenio" *ngIf="s.numeroGuia != ''">Convênio</span><span class="particular" *ngIf="s.numeroGuia == ''">Particular</span>
+        </h2>
+      </ion-label>
+    </ion-item>
+  </ion-list> -->
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
 </ion-content>

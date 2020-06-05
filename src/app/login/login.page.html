@@ -1,0 +1,24 @@
+<ion-content fullscreen>
+
+  <ion-img src="/assets/img/logo.jpg"></ion-img>
+
+  <ion-list class="ion-padding">
+    <ion-item>
+      <ion-label position="stacked">E-mail <ion-text color="danger">*</ion-text></ion-label>
+      <ion-input [(ngModel)]="email" type="text" (keyup)="digitouEmail()"></ion-input>
+    </ion-item>
+    <div *ngIf="emailVazio" class="ion-text-center mensagemVazio">Campo obrigatório</div>
+
+    <ion-item>
+      <ion-label position="stacked">Senha <ion-text color="danger">*</ion-text></ion-label>
+      <ion-input [(ngModel)]="senha" type="password" (keyup)="digitouSenha()"></ion-input>
+    </ion-item>
+    <div *ngIf="senhaVazia" class="ion-text-center mensagemVazio">Campo obrigatório</div>
+  </ion-list>
+  
+  <div *ngIf="naoEncontrado" class="ion-text-center mensagemVazio">E-mail e/ou senha não encontrado</div>
+
+  <div class="ion-padding">
+    <ion-button (click)="entrar()" expand="block" class="ion-no-margin">ENTRAR</ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,43 @@
+.textoLeitura {
+    color: rgb(73, 73, 73);
+    font-size: 20px;
+}
+
+.mensagemValidacao {
+    font-size: 12px;
+    color: var(--ion-color-danger);
+}
+
+.campo {
+    border: 1px solid var(--ion-color-primary);
+    border-radius: 2px !important;
+    padding-left: 5px !important;
+    margin-bottom: 10px;
+    background-color:rgb(245, 245, 245);
+    height: 30px;
+    font-size: 15px;    
+    margin-top: -8px;
+}
+
+.evolucao {
+    border: 1px solid var(--ion-color-primary);
+    border-radius: 2px !important;
+    padding-left: 5px !important;
+    margin-bottom: 10px;
+    background-color:rgb(245, 245, 245);
+    font-size: 15px;
+}
+
+
+.menosTop {
+    margin-top: -25px;
+}
+
+.menosTopH5 {
+    margin-top: 6px;
+}
+
+h5 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}

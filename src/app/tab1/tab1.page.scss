@@ -1,3 +1,36 @@
 ion-content ion-toolbar {
   --background: translucent;
 }
+
+.dataSessao {
+  font-size: 10;
+  color: gray;
+}
+
+.convenio {
+  color: #5260ff;
+}
+
+.particular {
+  color: #2dd36f;
+}
+
+.horario {
+  font-size: 20px;
+  color: black;
+}
+
+.paciente {
+  font-size: 20px;
+  color: rgb(0, 0, 87); 
+}
+
+.margemDeCima {
+  margin-left: 10px;
+  padding-top: 8px;
+}
+
+.margemDeBaixo {
+  margin-left: 10px;
+  padding-bottom: 8px;
+}
