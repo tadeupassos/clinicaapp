@@ -1,20 +1,50 @@
 <ion-header>
   <ion-toolbar color="tertiary">
-    <ion-title>
-      Pacientes
-    </ion-title>
+    <ion-row>
+      <ion-col class="margemPaciente" size="12">
+        Pacientes <span class="totalPaciente">{{ totalPacientes }}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-searchbar class="fundosearch" [(ngModel)]="buscaLetra" (ionInput)="filtrarPorLetra($event)" placeholder="Nome do Paciente">
+        </ion-searchbar>
+      </ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let s of sessoes" [routerLink]="['/tabs/sessoes-passada']">
-    <ion-row class="margemDeBaixo">
-      <ion-col size="12" class="paciente flex-left">
-        {{ s.nomePaciente }}
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" [routerLink]="['/add-paciente']" routerLinkActive="router-link-active" >
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-card *ngFor="let p of pacientes">
+    <ion-row>
+      <ion-col size="12">
+        <button class="botao nome" [routerLink]="['/add-paciente',p.id]">
+          {{ p.nome }}
+        </button>
       </ion-col>
-      <ion-col size="4" class="dataSessao flex-left">
-        <span class="convenio" *ngIf="s.numeroGuia != ''">Convênio</span>
-        <span class="particular" *ngIf="s.numeroGuia == ''">Particular</span>
+    </ion-row>
+    <ion-row class="margemDeBaixo">
+      <ion-col size="4" class="flex-left">
+        <button class="botao prontuario" [routerLink]="['/tabs/prontuario',p.id]">
+          Prontuário
+        </button>
+        <!-- <div [class.colorTipoConvenio]="p.atendimento == 'Convênio'"  
+        [class.colorTipoParticular]="p.atendimento == 'Particular'"><strong>{{ p.atendimento }} <span *ngIf="p.convenio"> - {{ p.convenio }}</span></strong></div> -->
+      </ion-col>
+      <ion-col class="flex-left">
+        <button 
+          (click)="abrirHistorico(p)"
+          class="botao historico"
+        >
+          Histórico Sessões
+        </button>
       </ion-col>
     </ion-row>
   </ion-card>

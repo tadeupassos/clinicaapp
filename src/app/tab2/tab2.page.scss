@@ -1,3 +1,61 @@
 ion-content ion-toolbar {
   --background: translucent;
 }
+
+.paciente {
+  color: black;
+  font-size: 15px;
+}
+
+.colorTipoConvenio {
+  color: var(--ion-color-tertiary);
+  font-size: 15px;
+}
+
+.colorTipoParticular {
+  color: var(--ion-color-success);
+  font-size: 15px;
+}
+
+.totalPaciente {
+  color: var(--ion-color-primary);
+  font-size: 16px;
+  background-color: #fff;
+  border-radius: 3px;
+  padding: 3px;
+}
+
+.margemPaciente {
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+.botao {
+  border-radius: 2px;
+  padding: 6px;
+  font-size: 16px;
+  text-align: center;
+  margin-left: 5px;
+
+  &.nome {
+      border: 1px solid var(--ion-color-tertiary);
+      background-color: white;
+      color: var(--ion-color-tertiary);
+  }
+
+  &.prontuario {
+      border: 1px solid var(--ion-color-secondary);
+      background-color: white;
+      color: var(--ion-color-secondary);
+      margin-bottom: 5px;
+      margin-right: 10px;
+  }
+
+  &.historico {
+    border: 1px solid var(--ion-color-danger-tint);
+    background-color: white;
+    color: var(--ion-color-danger-tint);
+    margin-bottom: 5px;
+    margin-right: 10px;
+  }
+}

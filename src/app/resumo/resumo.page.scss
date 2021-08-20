@@ -1,0 +1,50 @@
+.selecionarMes {
+    margin-right: 40px;
+    border: 1px solid;
+    border-radius: 10px;
+}
+
+.box {
+    border: 1px solid black;
+    border-radius: 6px;
+    height: 78px;
+    margin: 12px;
+    position: relative;
+    margin-top: 30px;
+}
+
+.titulo {
+    background-color: white;
+    position: absolute;
+    top: -11px;
+    left: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 15px;
+}
+
+.sessoes {
+    font-size: 18px;
+    text-align: center;
+    padding: 13px 15px 0px;
+    color: #3171e0;
+}
+
+.valor {
+    font-size: 20px;
+    color: #28ba62;
+    padding-top: 10px;
+}
+
+.valorSub {
+    font-size: 16px;
+    margin-left: -10px;
+    color: gray;
+    padding-top: 4px;
+}
+
+.dataFiltro {
+    width: 190px;
+    border: 1px solid black;
+    border-radius: 5px;
+}

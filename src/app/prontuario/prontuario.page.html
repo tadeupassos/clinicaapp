@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button [routerLink]="['/tabs/tab2']">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons> 
+    <ion-title>{{ paciente.nome }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row class="ion-margin prontuario">
+    <ion-col size="12">
+      <ion-text>
+        <h5><strong>Prontuário Número: {{ numeroProntuario }}</strong></h5>
+      </ion-text>
+    </ion-col>    
+  </ion-row>
+
+  <form [formGroup]="fGroup" class="ion-padding">
+    <ion-row>    
+      <ion-col size="12">
+        <ion-text class="titulo">Demanda: </ion-text>
+        <ion-input type="text" formControlName="demanda" class="campo"></ion-input>
+      </ion-col>    
+    </ion-row>
+
+    <ion-row>    
+      <ion-col size="12">
+        <ion-text class="titulo">Objetivos: </ion-text>
+        <ion-input type="text" formControlName="objetivos" class="campo"></ion-input>
+      </ion-col>    
+    </ion-row>
+
+    <ion-row>    
+      <ion-col size="12">
+        <ion-text class="titulo">Evolução: </ion-text>
+        <ion-textarea rows="6" cols="20" formControlName="evolucao" class="evolucao"></ion-textarea>
+      </ion-col>    
+    </ion-row>
+
+    <ion-row>    
+      <ion-col size="12">
+        <ion-text class="titulo">Procedimentos: </ion-text>
+        <ion-input type="text" formControlName="procedimentos" class="campo"></ion-input>
+      </ion-col>    
+    </ion-row>
+
+    <ion-row>    
+      <ion-col size="12">
+        <ion-text class="titulo">Encaminhamento: </ion-text>
+        <ion-input type="text" formControlName="encaminhamento" class="campo"></ion-input>
+      </ion-col>    
+    </ion-row>    
+    <br>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button [disabled]="!fGroup.valid" (click)="salvarDados()" expand="block">
+          Gravar Dados
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        
+      </ion-col>
+    </ion-row>
+
+  </form>
+</ion-content>

@@ -3,6 +3,9 @@ import { NavController } from '@ionic/angular';
 import { SessaoService } from '../services/sessao.service';
 import { Subscription } from 'rxjs';
 import { Sessao } from '../interfaces/sessao';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Paciente } from '../interfaces/paciente';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sessoes-passada',
@@ -15,34 +18,56 @@ export class SessoesPassadaPage implements OnInit {
   public sessoes = new Array<Sessao>();
   public nomePsicologo = "";
   public crp = "";
+  public convenio = "";
+  public nomePaciente = "";
+  public numeroGuia = "";
+  public pacienteId = "";
+  public atendimento = "";
+  //private paciente: Paciente = {};
 
   constructor(
     private navCtrl: NavController,
     private sessaoService: SessaoService,
+    private activeRoute: ActivatedRoute,
+    private router: Router,
   ) {
 
-    this.nomePsicologo = localStorage.getItem("nomePsicologo");
-    this.crp = localStorage.getItem("crp");
+    this.activeRoute.queryParams.subscribe(params => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.nomePsicologo = localStorage.getItem("nomePsicologo");
+        this.crp = localStorage.getItem("crp");
+        
+        this.pacienteId = this.router.getCurrentNavigation().extras.state.id;
+        this.convenio = this.router.getCurrentNavigation().extras.state.convenio;
+        this.nomePaciente = this.router.getCurrentNavigation().extras.state.nome;
+        
+        console.log("this.pacienteId",this.pacienteId);
+    
+        this.sessaoSubscription = this.sessaoService.getSessoesPaciente(this.pacienteId)
+        .subscribe((data:any) => {
+          this.sessoes = data;
+          console.log("data",data);
+    
+          this.sessoes.sort((a,b) => {
+            let dataCompletaA = new Date([a.ano,a.mes,a.dia].join("-") + " " + a.horaSessao);
+            let dataCompletaB = new Date([b.ano,b.mes,b.dia].join("-") + " " + b.horaSessao);
+            return  dataCompletaA < dataCompletaB ? -1 : 1;
+          });
+    
+        });
+      }
+  
+    })
 
-    console.log("nomePsicologo",this.nomePsicologo);
-
-    this.sessaoSubscription = this.sessaoService.getSessoes(this.crp).subscribe(data => {
-      //this.sessoes = data;
-      this.sessoes = data.filter((f:Sessao) => {
-        return f.frequencia != "";
-      });
-      console.log("this.sessoes",this.sessoes);
-
-      this.sessoes.sort((a,b) => {
-        let dataCompletaA = new Date([a.ano,a.mes,a.dia].join("-") + " " + a.horaSessao);
-        let dataCompletaB = new Date([b.ano,b.mes,b.dia].join("-") + " " + b.horaSessao);
-        return  dataCompletaA < dataCompletaB ? -1 : 1;
-      });
-
-    });
   }
 
   ngOnInit() {
+
   }
+
+  ngOndestroy() {
+    if(this.sessaoSubscription) this.sessaoSubscription.unsubscribe();
+  } 
+
 
 }

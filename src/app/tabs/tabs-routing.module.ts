@@ -53,6 +53,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'prontuario/:id',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../prontuario/prontuario.module').then( m => m.ProntuarioPageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full'

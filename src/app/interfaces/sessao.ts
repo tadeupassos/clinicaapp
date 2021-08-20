@@ -18,4 +18,8 @@ export interface Sessao {
     conteudo?: string;
     outros?: string;
     userId?: string;
+    atendimento?: string;
+    valor?: string;
+    nomeConvenio?: string;
+    dtTimeStamp?: string;
 }

@@ -1,0 +1,53 @@
+.margemLinha {
+    margin-bottom: -20px;
+}
+
+.campo {
+    border: 1px solid var(--ion-color-primary);
+    border-radius: 2px !important;
+    padding-left: 5px !important;
+    margin-bottom: 10px;
+    background-color:rgb(245, 245, 245);
+    height: 35px;
+    font-size: 15px;
+    background-color: aliceblue;
+}
+
+.mensagemValidacao {
+    font-size: 12px;
+    color: var(--ion-color-danger);
+}
+
+.textoLeitura {
+    color: gray;
+    font-size: 20px;
+}
+
+.sessoes {
+    width: 110px;
+}
+
+.selecionar {
+    width: 130px;;
+}
+
+h5 {
+    font-size: 14px;
+    margin-bottom: 0px;
+}
+
+// ion-input[type="date"] {
+//     background-color: aliceblue;
+//     border: 1px solid var(--ion-color-primary);
+//     width: 57%;
+//     margin-left: 5px;
+//     margin-bottom: 15px;
+//     margin-top: 5px;
+// }
+
+.diaSemana {
+    width: 144px;
+    font-size: 20px;
+    background-color: #80808042;
+    color: #6d6d6d; 
+}

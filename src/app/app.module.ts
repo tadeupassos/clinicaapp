@@ -13,6 +13,13 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
+import { HttpClientModule } from "@angular/common/http";
+
+import { LOCALE_ID } from '@angular/core';
+import localePt from '@angular/common/locales/pt';
+import {registerLocaleData} from '@angular/common';
+registerLocaleData(localePt)
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -23,11 +30,16 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    HttpClientModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {
+      provide: LOCALE_ID,
+      useValue: "pt-BR"
+    },
   ],
   bootstrap: [AppComponent]
 })

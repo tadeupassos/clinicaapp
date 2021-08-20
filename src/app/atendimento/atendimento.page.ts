@@ -5,6 +5,9 @@ import { SessaoService } from '../services/sessao.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoadingController, NavController, ToastController } from '@ionic/angular';
+import { Paciente } from 'src/app/interfaces/paciente';
+import { PacienteService } from '../services/paciente.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-atendimento',
@@ -18,6 +21,9 @@ export class AtendimentoPage implements OnInit {
   public sessao: Sessao = {};
   public sessaoId: string = null;
   public sessaoSubscription: Subscription;  
+  public numeroGuia = "";
+  private paciente: Paciente = {};
+  private pacienteSubscription: Subscription;  
 
   public mostrarCampoOutros: boolean = false;
   public mostrarConteudoEvolucao: boolean = false;
@@ -29,11 +35,12 @@ export class AtendimentoPage implements OnInit {
     private activeRoute: ActivatedRoute,
     private loadingCtrl: LoadingController,
     private navCtrl: NavController,
-    private toastCrtl: ToastController
+    private toastCrtl: ToastController,
+    private pacienteService: PacienteService,
   ) { 
 
     this.fGroup = this.fBuilder.group({
-      'frequencia': [this.sessao.frequencia, Validators.compose([Validators.required,])],
+      'frequencia': [this.sessao.frequencia, Validators.compose([Validators.required])],
       'conteudo': [this.sessao.conteudo],
       'evolucao': [this.sessao.evolucao],
       'outros': [this.sessao.outros]
@@ -73,15 +80,19 @@ export class AtendimentoPage implements OnInit {
     this.sessaoId = this.activeRoute.snapshot.params['id'];
     this.sessaoSubscription = this.sessaoService.getSessao(this.sessaoId).subscribe(data => {
       this.sessao = data;
+      this.numeroGuia = this.sessao.numeroGuia;
+      console.log("this.sessao",this.sessao);
+
+      this.pacienteSubscription = this.pacienteService.getPaciente(this.sessao.pacienteId).subscribe(data => {
+        this.paciente = data;
+      });
 
       // this.fGroup = this.fBuilder.group({
       //   'frequencia': [this.sessao.frequencia, Validators.compose([Validators.required,])],
       //   'conteudo': [this.sessao.conteudo, Validators.compose([Validators.required,])],
       //   'evolucao': [this.sessao.evolucao, Validators.compose([Validators.required,])]
       // });
-
     });
-
   }
 
   ngOnInit() {
@@ -90,13 +101,10 @@ export class AtendimentoPage implements OnInit {
 
   ngOndestroy() {
     if(this.sessaoSubscription) this.sessaoSubscription.unsubscribe();
+    if(this.pacienteSubscription) this.pacienteSubscription.unsubscribe();
   } 
 
-
   async salvarDados(){
-
-    // [disabled]="!fGroup.valid"
-
     if(this.fGroup.value.frequencia == "Presença"){
 
     }
@@ -105,20 +113,21 @@ export class AtendimentoPage implements OnInit {
 
     this.sessao.frequencia = this.fGroup.value.frequencia;
     this.sessao.conteudo = this.fGroup.value.conteudo;
-    this.sessao.evolucao = this.fGroup.value.evolucao;
+    this.sessao.evolucao = this.sessao.dataSessao + " - " + this.fGroup.value.evolucao;
     this.sessao.outros = this.fGroup.value.outros;
-
     this.sessao.userId = "100";  
 
     try {
       await this.sessaoService.updateSessao(this.sessaoId, this.sessao);
       await this.loading.dismiss();
+
+      this.atualizaProntuario();
+
       this.navCtrl.navigateBack('/tabs/tab1');
     }catch(error) {
       this.presentToast('Erro ao tentar salvar');
       this.loading.dismiss();
     }
-
   }
 
   public async presentLoading(){
@@ -129,7 +138,12 @@ export class AtendimentoPage implements OnInit {
   public async presentToast(message: string){
     const toast = await this.toastCrtl.create({ message,  duration: 2000 });
     toast.present();
-  }  
+  }
+
+  atualizaProntuario(){
+    this.paciente.prontuario.evolucao += this.sessao.evolucao + ";\n";
+    this.pacienteService.updatePaciente(this.sessao.pacienteId, this.paciente);
+  }
 
 
 }
