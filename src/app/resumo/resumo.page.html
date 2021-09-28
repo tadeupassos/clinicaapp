@@ -29,6 +29,23 @@
     <ion-col size="1">
     </ion-col>
   </ion-row>
+
+  <ion-row>
+    <ion-col class="flex-right" size="1">
+    </ion-col>
+    <ion-col class="flex-right" size="3">
+      Convênio
+    </ion-col>
+    <ion-col size="8">
+      <select 
+        [(ngModel)]="filConvenio" 
+        class="campo selecionar" 
+      >
+        <option value="Todos" selected>Todos</option>
+        <option *ngFor="let c of convenios" [value]="c.convenio">{{ c.convenio }}</option>
+      </select>
+    </ion-col>
+  </ion-row>
   
   <ion-button style="margin: 10px 55px;" (click)="filtrarPorData(true)" expand="block" color="success">
     Filtrar

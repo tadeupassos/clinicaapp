@@ -6,6 +6,8 @@ import { NavController } from '@ionic/angular';
 import { PacienteService } from '../services/paciente.service';
 import { Paciente } from '../interfaces/paciente';
 import { ServicosService } from '../services/servicos.service';
+import { Convenio } from 'src/app/interfaces/convenio';
+import { ConvenioService } from 'src/app/services/convenio.service';
 
 @Component({
   selector: 'app-resumo',
@@ -27,12 +29,14 @@ export class ResumoPage implements OnInit {
   particular: any = {
     sessoes: 0,
     valor: 0,
-    subLocacao: 0
+    subLocacao: 0,
+    todos: []
   }
 
   convenio: any = {
     sessoes: 0,
-    valor: 0
+    valor: 0,
+    todos: []
   }
 
   qtdeSessoes = 0;
@@ -42,15 +46,28 @@ export class ResumoPage implements OnInit {
 
   dtInicio = "";
   dtFim = "";
+  filConvenio = "Todos"
+  filtrado = {
+    inicio:  "",
+    fim: ""
+  }
+
+  convenios = new Array<Convenio>();
+  convenioSubscription: Subscription;
 
   constructor(
     private navCtrl: NavController,
     private sessaoService: SessaoService,
     private pacienteService: PacienteService,
-    private servicos: ServicosService
+    private servicos: ServicosService,
+    private convenioService: ConvenioService,
   ) {
 
     this.crp = localStorage.getItem("crp");
+
+    this.convenioSubscription = this.convenioService.getConvenios().subscribe((c:Array<Convenio>) => {
+      this.convenios = c;
+    });
   }
 
   ngOnInit() {
@@ -59,63 +76,73 @@ export class ResumoPage implements OnInit {
 
   async filtrarPorData(sel = false){
 
-    let agora = new Date();
-    let dataInicio: any;
-    let dataFim: any;
+      console.log("this.dtInicio",this.dtInicio)
 
-    if(sel){
-      // 2021-08-04
-      let [ano,mes,dia] = this.dtInicio.split("-");
-      dataInicio = new Date(Number(ano),Number(mes) -1 ,Number(dia),0,0,0).getTime();
+      let agora = new Date();
+      let dataInicio: any;
+      let dataFim: any;
 
-      [ano,mes,dia] = this.dtFim.split("-");
-      dataFim = new Date(Number(ano),Number(mes) -1 ,Number(dia),0,0,0).getTime();
-    }else{
-      // 04/08/2021
-      dataInicio = new Date(agora.getFullYear(),agora.getMonth(),1).getTime();
-      dataFim = new Date(agora.getFullYear(),agora.getMonth() + 1,0).getTime();
+      if(sel){
+        // 2021-08-04
+        let [ano,mes,dia] = this.dtInicio.split("-");
+        dataInicio = new Date(Number(ano),Number(mes) -1 ,Number(dia),0,0,0).getTime();
 
-      let [dia,mes,ano] = new Date(dataInicio).toLocaleDateString().split("/");
-      this.dtInicio = [ano,mes,dia].join("-");
+        [ano,mes,dia] = this.dtFim.split("-");
+        dataFim = new Date(Number(ano),Number(mes) -1 ,Number(dia),0,0,0).getTime();
+      }else{
+        // 04/08/2021
+        dataInicio = new Date(agora.getFullYear(),agora.getMonth(),1).getTime();
+        dataFim = new Date(agora.getFullYear(),agora.getMonth() + 1,0).getTime();
 
-      [dia,mes,ano] = new Date(dataFim).toLocaleDateString().split("/");
-      this.dtFim = [ano,mes,dia].join("-");
-    }
+        let [dia,mes,ano] = new Date(dataInicio).toLocaleDateString().split("/");
+        this.dtInicio = [ano,mes,dia].join("-");
 
-    this.filtroSubscription = this.sessaoService.getSessoesPorData(this.crp,dataInicio,dataFim)
-    .subscribe((resultado:Array<Sessao>) => {
+        [dia,mes,ano] = new Date(dataFim).toLocaleDateString().split("/");
+        this.dtFim = [ano,mes,dia].join("-");
+      }
 
-      this.particular.sessoes = 0;
-      this.particular.valor = 0;
-      this.particular.subLocacao = 0;
-    
-      this.convenio.sessoes = 0,
-      this.convenio.valor = 0
-    
-      this.qtdeSessoes = 0;
-      this.total = 0;
+      this.filtrado.inicio = this.dtInicio;
+      this.filtrado.fim = this.dtFim;
 
-      console.log("resultado",resultado);
+      this.filtroSubscription = this.sessaoService.getSessoesPorData(this.crp,dataInicio,dataFim,this.filConvenio)
+      .subscribe((resultado:Array<Sessao>) => {
+        this.todasSessoes = resultado;
+        this.preparaResultado(resultado);
+      })
 
-      let convenio = resultado.filter((f:Sessao) => { return f.atendimento == "Convênio" });
-      this.convenio.sessoes = convenio.length;
-      convenio.forEach((c:Sessao) => {
-        this.convenio.valor += Number(this.servicos.cobranca.Repasse.replace(",","."));
-      });
+      //const mesCorrente: Array<Sessao> = await this.sessaoService.getSessoesPorData(this.crp,dataInicio,dataFim).toPromise()
+
+  }
+
+  preparaResultado(resultado:Array<Sessao>){
+
+    console.log("resultado",resultado);
+
+    this.particular.sessoes = 0;
+    this.particular.valor = 0;
+    this.particular.subLocacao = 0;
   
-      let particular = resultado.filter((f:Sessao) => { return f.atendimento == "Particular" });
-      this.particular.sessoes = particular.length;
-      particular.forEach((c:Sessao) => {
-        this.particular.valor += Number(c.valor.replace(",","."));
-        this.particular.subLocacao += Number(this.servicos.cobranca.Sublocacao.replace(",","."));
-      });
+    this.convenio.sessoes = 0,
+    this.convenio.valor = 0
   
-      this.qtdeSessoes = this.convenio.sessoes + this.particular.sessoes;
-      this.total = this.convenio.valor + this.particular.valor;
-    })
+    this.qtdeSessoes = 0;
+    this.total = 0;
 
-    //const mesCorrente: Array<Sessao> = await this.sessaoService.getSessoesPorData(this.crp,dataInicio,dataFim).toPromise()
+    this.convenio.todos = resultado.filter((f:Sessao) => { return f.atendimento == "Convênio" });
+    this.convenio.sessoes = this.convenio.todos.length;
+    this.convenio.todos.forEach((c:Sessao) => {
+      this.convenio.valor += Number(this.servicos.cobranca.Repasse.replace(",","."));
+    });
 
+    this.particular.todos = resultado.filter((f:Sessao) => { return f.atendimento == "Particular" });
+    this.particular.sessoes = this.particular.todos.length;
+    this.particular.todos.forEach((c:Sessao) => {
+      this.particular.valor += Number(c.valor.replace(",","."));
+      this.particular.subLocacao += Number(this.servicos.cobranca.Sublocacao.replace(",","."));
+    });
+
+    this.qtdeSessoes = this.convenio.sessoes + this.particular.sessoes;
+    this.total = this.convenio.valor + this.particular.valor;
   }
 
   ngOndestroy() {

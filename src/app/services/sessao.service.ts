@@ -45,16 +45,19 @@ export class SessaoService {
     )
   }
 
-  getSessoesPorData(crp: string, inicio: any, fim: any) {
+  getSessoesPorData(crp: string, inicio: any, fim: any, tipo: string) {
 
-    console.log("inicio",inicio);
-    console.log("fim",fim);
-
-    return this.afs.collection<Sessao>('Sessoes', ref => ref
+    let query =  this.afs.collection<Sessao>('Sessoes').ref
       .where('crp', '==', crp)
       .where('frequencia', '==', 'Presença')
       .where('dataSessaoStamp', '>=', inicio)
-      .where('dataSessaoStamp', '<=', fim))
+      .where('dataSessaoStamp', '<=', fim);
+
+      if(tipo != "Todos"){
+        query = query.where('nomeConvenio', '==', tipo);
+      }
+
+      return this.afs.collection<Sessao>('Sessoes', ref => query)
       .snapshotChanges()
       .pipe(
         map(actions => {
