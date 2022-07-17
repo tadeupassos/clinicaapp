@@ -41,6 +41,8 @@ export class Tab1Page {
     this.carregarSessoesAgendadas();
     this.carregarSessaoPorMes();
 
+    //this.carregarSessoesPorCrp();
+
   }
 
   carregarSessoesAgendadas(){
@@ -65,17 +67,17 @@ export class Tab1Page {
     })
   }
 
-  // setarData(sessoes: Array<Sessao>){
-  //   sessoes.forEach(s => {
+  setarData(sessoes: Array<Sessao>){
+    sessoes.forEach(s => {
 
-  //     let [dia,mes,ano] = s.dataSessao.split("/");
-  //     s.dataSessaoStamp = new Date(Number(ano),Number(mes) - 1,Number(dia),0,0,0).getTime();
+      let [dia,mes,ano] = s.dataSessao.split("/");
+      s.dataSessaoStamp = new Date(Number(ano),Number(mes) - 1,Number(dia),0,0,0).getTime();
 
-  //     this.sessaoService.updateSessao(s.id,s);
-  //     console.log(s.dataSessaoStamp);
+      this.sessaoService.updateSessao(s.id,s);
+      console.log(s.dataSessaoStamp);
         
-  //   });
-  // }
+    });
+  }
 
   carregarSessaoPorMes(){
     let agora = new Date();
@@ -128,6 +130,19 @@ export class Tab1Page {
     });
 
     await alert.present();
+  }
+
+  carregarSessoesPorCrp(){
+    this.sessaoService.getSessoesPorCrp(this.crp).subscribe((sessoes:Array<Sessao>) => {
+      let agnaldo = sessoes.filter((s:Sessao) => { 
+        return s.nomePaciente.toLowerCase().includes("agnaldo") && s.ano == "2022"
+      }).sort((a,b) => {
+        let dataCompletaA = new Date([a.ano,a.mes,a.dia].join("-") + " " + a.horaSessao);
+        let dataCompletaB = new Date([b.ano,b.mes,b.dia].join("-") + " " + b.horaSessao);
+        return  dataCompletaA < dataCompletaB ? -1 : 1;
+      });
+      console.log("agnaldo",agnaldo);
+    })
   }
 
 }

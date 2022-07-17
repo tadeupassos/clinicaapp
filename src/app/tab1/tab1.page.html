@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar color="tertiary">
     <ion-buttons slot="end">
+      <ion-text style="color: #ffffff78; font-size: 15px;">
+        0.1.25
+      </ion-text>
       <ion-button (click)="sair()">
         Sair
       </ion-button>
@@ -13,11 +16,11 @@
 
 <ion-content [fullscreen]="true">
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" [routerLink]="['/add-sessao']" routerLinkActive="router-link-active" >
+  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" [routerLink]="['/add-sessao']" routerLinkActive="router-link-active" >
     <ion-fab-button>
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
+  </ion-fab> -->
 
   <ion-row class="resumo"[routerLink]="['/resumo']" >
     <ion-col size="10">
@@ -39,17 +42,18 @@
         <ion-label class="dataSemana">{{ g[1][0].diaSemana }}, <strong>{{ g[0] }}</strong> </ion-label>
       </ion-item-divider>
 
-      <ion-item-sliding *ngFor="let s of g[1]">
-        <ion-item [routerLink]="['/tabs/atendimento',s.id]">
+      <!-- <ion-item-sliding *ngFor="let s of g[1]"> -->
+        <!-- [routerLink]="['/tabs/atendimento',s.id]" -->
+        <ion-item *ngFor="let s of g[1]">
           <ion-row>
             <ion-col size="12" class="paciente flex-left">
               <strong>{{ s.horaSessao }}</strong>&nbsp;- {{ s.nomePaciente }}
             </ion-col>
           </ion-row>
-          <ion-icon slot="end" name="arrow-forward"></ion-icon>
+          <!-- <ion-icon slot="end" name="arrow-forward"></ion-icon> -->
         </ion-item>
 
-        <ion-item-options side="start">
+        <!-- <ion-item-options side="start">
           <ion-item-option color="primary" [routerLink]="['/add-sessao',s.id]">
             <ion-icon slot="icon-only" name="create-outline"></ion-icon>
           </ion-item-option>
@@ -57,7 +61,7 @@
             <ion-icon slot="icon-only" name="trash"></ion-icon>
           </ion-item-option>
         </ion-item-options>
-      </ion-item-sliding>
+      </ion-item-sliding> -->
     </ion-item-group>
   </ion-card>
 

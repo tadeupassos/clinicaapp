@@ -51,68 +51,92 @@
     Filtrar
   </ion-button>
 
-  <div class="box">
+  <div 
+    [ngStyle]="{'height': conv.falta || conv.faltaJ || conv.faltaT || conv.faltaF ? '250px' : '183px' }" class="box"
+  >
     <span class="titulo">Convênio</span>
     <ion-row>
-      <ion-col class="sessoes" size="6">
-        Quantidade
+      <ion-col class="sessoes" size="5">
+        Quantidade: <span class="valor">{{ conv.sessoes }}</span>
       </ion-col>
-      <ion-col class="sessoes flex-center" size="6">
-        Valor
+      <ion-col class="sessoes" size="7">
+        Valor: <span class="valor">{{ conv.valor | currency:'BRL' }}</span>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col class="valor flex-center" size="6">
-        {{convenio.sessoes}}
-      </ion-col>
-      <ion-col class="valor flex-center" size="6">
-        {{ convenio.valor | currency:'BRL' }}
+
+    <ion-row style="font-size: 14px;">
+      <ion-col class="corC" size="12">
+        Presença: <strong>{{ conv.presenca }}</strong><br>
+        Falta Paciente: <strong>{{ conv.faltaPaciente }}</strong><br>
+        Falta Justificada Paciente: <strong>{{ conv.faltaJustificadaPaciente }}</strong><br> 
+        <span [ngStyle]="{'color' : conv.faltaTerapeuta ? 'red' : 'gray' }">
+          Falta Terapeuta: <strong>{{ conv.faltaTerapeuta }}</strong>
+        </span><br> 
+        Falta Justificada Terapeuta: <strong>{{ conv.faltaJustificadaTerapeuta }}</strong><br>
+        Recessos e Feriados: <strong>{{ conv.recessosFeriados }}</strong><br>
+        Manutenção Predial: <strong>{{ conv.manutencaoPredial }}</strong><br>
+        Reposição: <strong>{{ conv.reposicao }}</strong>
+        <hr>
+        <span style="color: chocolate; font-weight: bold; margin-left: -7px;" *ngIf="conv.falta || conv.faltaJ || conv.faltaT || conv.faltaF">
+          Tipos antigos de frequência:
+        </span><br>
+        <span *ngIf="conv.falta">Falta: <strong>{{ conv.falta }}</strong></span>&nbsp;&nbsp;&nbsp; 
+        <span *ngIf="conv.faltaJ">Falta Justificada: <strong>{{ conv.faltaJ }}</strong></span><br> 
+        <span *ngIf="conv.faltaT">Falta do Terapeuta: <strong>{{ conv.faltaT }}</strong></span>&nbsp;&nbsp;&nbsp; 
+        <span *ngIf="conv.faltaF">Feriado: <strong>{{ conv.faltaF }}</strong></span>
       </ion-col>
     </ion-row>
 
   </div>
 
-  <div style="height: 110px;" class="box">
+  <div 
+    [ngStyle]="{'height': part.falta || part.faltaJ || part.faltaT || part.faltaF ? '257px' : '187px' }"        class="box"
+  >
     <span class="titulo">Particular</span>
-    <ion-row>
-      <ion-col class="sessoes" size="6">
-        Quantidade
+    <ion-row style="margin-top: 10px; margin-left: 10px;">
+      <ion-col class="sessoesPart flex-left" size="3">
+        Qtde: &nbsp;<span class="valor">{{ part.sessoes }}</span>
       </ion-col>
-      <ion-col class="sessoes flex-center" size="6">
-        Valor
+      <ion-col class="sessoesPart flex-left" size="5">
+        Valor: &nbsp;<span class="valor">{{ part.valor | currency:'BRL' }}</span>
       </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="valor flex-center" size="6">
-        {{particular.sessoes}}
-      </ion-col>
-      <ion-col class="valor flex-center" size="6">
-        {{ particular.valor | currency:'BRL' }}
+      <ion-col style="font-size: 12px;" class="valorSub flex-center" size="4">
+        Subloc.: &nbsp;{{ part.subLocacao | currency:'BRL' }} 
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col class="flex-center" size="12">
-        <span style="margin-top: -8px; color: #696868; font-size: 15px; font-weight: 600;" class="sessoes">Sublocação:</span><span class="valorSub">{{ particular.subLocacao | currency:'BRL' }}</span> 
+
+    <ion-row style="font-size: 14px;">
+      <ion-col class="corC" size="12">
+        Presença: <strong>{{ part.presenca }}</strong><br>
+        Falta Paciente: <strong>{{ part.faltaPaciente }}</strong><br>
+        Falta Justificada Paciente: <strong>{{ part.faltaJustificadaPaciente }}</strong><br> 
+        <span [ngStyle]="{'color' : part.faltaTerapeuta ? 'red' : 'gray' }">
+          Falta Terapeuta: <strong>{{ part.faltaTerapeuta }}</strong>
+        </span><br> 
+        Falta Justificada Terapeuta: <strong>{{ part.faltaJustificadaTerapeuta }}</strong><br>
+        Recessos e Feriados: <strong>{{ part.recessosFeriados }}</strong><br>
+        Manutenção Predial: <strong>{{ part.manutencaoPredial }}</strong><br>
+        Reposição: <strong>{{ part.reposicao }}</strong>
+        <hr>
+        <span style="color: chocolate; font-weight: bold; margin-left: -7px;" *ngIf="part.falta || part.faltaJ || part.faltaT || part.faltaF">
+          Tipos antigos de frequência:
+        </span><br>
+        <span *ngIf="part.falta">Falta: <strong>{{ part.falta }}</strong></span>&nbsp;&nbsp;&nbsp; 
+        <span *ngIf="part.faltaJ">Falta Justificada: <strong>{{ part.faltaJ }}</strong></span><br> 
+        <span *ngIf="part.faltaT">Falta do Terapeuta: <strong>{{ part.faltaT }}</strong></span>&nbsp;&nbsp;&nbsp; 
+        <span *ngIf="part.faltaF">Feriado: <strong>{{ part.faltaF }}</strong></span>
       </ion-col>
     </ion-row>
   </div>
 
-  <div class="box">
+  <div style="height: 45px;" class="box">
     <span class="titulo">Particular + Convênio</span>
     <ion-row>
-      <ion-col class="sessoes" size="6">
-        Quantidade
+      <ion-col class="sessoes flex-left" size="4">
+        Qtde: &nbsp;<span class="valor">{{ qtdeSessoes }}</span>
       </ion-col>
-      <ion-col class="sessoes flex-center" size="6">
-        Valor
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="valor flex-center" size="6">
-        {{ qtdeSessoes }}
-      </ion-col>
-      <ion-col class="valor flex-center" size="6">
-        {{ total | currency:'BRL' }}
+      <ion-col class="sessoes flex-left" size="8">
+        Valor: &nbsp;<span class="valor flex-center">{{ total | currency:'BRL' }}</span>
       </ion-col>
     </ion-row>
   </div>

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
-      <ion-button [routerLink]="['/tabs']">
+      <ion-button [routerLink]="['/tabs/tab3']">
         <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -34,12 +34,20 @@
       <ion-row>
         <ion-col size="12">
           <ion-text><h5>Frequência <ion-text color="danger">*</ion-text></h5></ion-text>
-          <select formControlName="frequencia" class="campo">
+          <select formControlName="frequencia" class="campo" disabled>
             <option>Presença</option>
+            <option>Falta Paciente</option>
+            <option>Falta Justificada Paciente</option>
+            <option>Falta Terapeuta</option>
+            <option>Falta Justificada Terapeuta</option>
+            <option>Recessos e Feriados</option>
+            <option>Manutenção Predial</option>
+            <option>Reposição</option>
+            <!-- <option>Presença</option>
             <option>Falta</option>
             <option>Falta Justificada</option>
             <option>Falta do Terapeuta</option>
-            <option>Feriado</option>
+            <option>Feriado</option> -->
           </select>
           <div class="mensagemValidacao" *ngIf="fGroup.controls.frequencia.errors">
             <span *ngIf="fGroup.controls.frequencia.errors.required && fGroup.controls.frequencia.touched">
@@ -49,8 +57,9 @@
         </ion-col>
       </ion-row>
 
+      <!-- *ngIf="mostrarConteudoEvolucao" -->
       <ion-row>
-        <ion-col size="12" *ngIf="mostrarConteudoEvolucao">
+        <ion-col size="12">
           <ion-text><h5>Conteúdo <ion-text color="danger">*</ion-text></h5></ion-text>
           <select formControlName="conteudo" class="campo">
             <option>Conversa</option>
@@ -79,7 +88,7 @@
       </ion-row>
 
       <ion-row>    
-        <ion-col size="12" *ngIf="mostrarConteudoEvolucao">
+        <ion-col size="12">
           <ion-text><h5>Evolução: <ion-text color="danger">*</ion-text></h5></ion-text>
           <ion-textarea rows="2" cols="20" formControlName="evolucao" class="evolucao"></ion-textarea>
           <div class="mensagemValidacao" *ngIf="fGroup.controls.evolucao.errors">

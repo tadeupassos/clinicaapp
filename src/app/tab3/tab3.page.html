@@ -1,16 +1,37 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header>
+  <ion-toolbar color="tertiary">
     <ion-title>
-      Tab 3
+      Prontuário da Sessão
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+
+  <div *ngIf="!agrupadoData.length"  class="nenhumaSessao">
+    Nenhuma sessão com frequência igual a presença e sem prontuário preenchido foi encontrada.
+  </div>
+
+  <div *ngIf="agrupadoData.length"  class="encontrouSessao">
+    Por favor, preecher o prontuário das sessões abaixo:
+  </div>
+
+  <ion-card *ngFor="let g of agrupadoData">
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label class="dataSemana">{{ g[1][0].diaSemana }}, <strong>{{ g[0] }}</strong> </ion-label>
+      </ion-item-divider>
+
+      <ion-item *ngFor="let s of g[1]" [routerLink]="['/tabs/atendimento',s.id]">
+        <ion-row >
+          <ion-col size="12" class="paciente flex-left">
+            <strong>{{ s.horaSessao }}</strong>&nbsp;- {{ s.nomePaciente }}
+          </ion-col>
+        </ion-row>
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-item>
+    </ion-item-group>
+  </ion-card>
 
 </ion-content>

@@ -14,21 +14,19 @@ export class SessaoService {
     this.sessoesCollection = this.afs.collection<Sessao>('Sessoes');
   }
 
-  getSessoes(crp) {
-    return this.sessoesCollection.snapshotChanges().pipe(
-      take(1),
-      map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          console.log("");
-          return { id, ...data };
+  getSessoesPorCrp(crp) {
+    return this.afs.collection<Sessao>('Sessoes', ref => ref
+      .where('crp', '==', crp))
+      .snapshotChanges()
+      .pipe(
+        map(actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })
         })
-          .filter(s => {
-            return s.crp == crp;
-          });
-      })
-    )
+      )
   }
 
   getSessoesTodos() {
@@ -38,28 +36,39 @@ export class SessaoService {
         return actions.map(a => {
           const data = a.payload.doc.data();
           const id = a.payload.doc.id;
-          console.log("");
           return { id, ...data };
         })
       })
     )
   }
 
-  getSessoesPorData(crp: string, inicio: any, fim: any, tipo: string) {
+  getSessoesPorData(crp: string, inicioParam: any, fimParam: any, tipo: string, old = false) {
 
-    let query =  this.afs.collection<Sessao>('Sessoes').ref
+    let [ano, mes, dia] = inicioParam.split("-");
+    let inicio = new Date(Number(ano), Number(mes) - 1, Number(dia), 0, 0, 0).getTime();
+
+    [ano, mes, dia] = fimParam.split("-");
+    let fim = new Date(Number(ano), Number(mes) - 1, Number(dia), 0, 0, 0).getTime();
+
+    let freqNew = ['Presença', 'Falta Paciente', 'Falta Justificada Paciente', 'Falta Terapeuta', 'Falta Justificada Terapeuta', 'Recessos e Feriados', 'Manutenção Predial', 'Reposição'];
+
+    let freqOld = ['Falta', 'Falta Justificada', 'Falta do Terapeuta', 'Feriados'];
+
+    console.log("getSessoesPorData", "crp: " + crp + ", inicio: " + inicio + ", fim: " + fim + ", tipo: " + tipo);
+    let query = this.afs.collection<Sessao>('Sessoes').ref
       .where('crp', '==', crp)
-      .where('frequencia', '==', 'Presença')
+      .where('frequencia', 'in', old ? freqOld : freqNew)
       .where('dataSessaoStamp', '>=', inicio)
       .where('dataSessaoStamp', '<=', fim);
 
-      if(tipo != "Todos"){
-        query = query.where('nomeConvenio', '==', tipo);
-      }
+    if (tipo != "Todos") {
+      query = query.where('nomeConvenio', '==', tipo);
+    }
 
-      return this.afs.collection<Sessao>('Sessoes', ref => query)
+    return this.afs.collection<Sessao>('Sessoes', ref => query)
       .snapshotChanges()
       .pipe(
+        take(1),
         map(actions => {
           return actions.map(a => {
             const data = a.payload.doc.data();
@@ -88,11 +97,29 @@ export class SessaoService {
       )
   }
 
+  // Esses antigos ficaram de fora 'Falta do Terapeuta', 'Feriado'
+
   getSessoesPaciente(pacienteId: string) {
     return this.afs.collection<Sessao>('Sessoes', ref => ref
-    .where('pacienteId', '==', pacienteId)
-    .where('frequencia', 'in', ['Presença','Falta','Falta Justificada','Falta do Terapeuta','Feriado']))
-    .snapshotChanges().pipe(
+      .where('pacienteId', '==', pacienteId)
+      .where('frequencia', 'in', ['Presença', 'Falta Paciente', 'Falta Justificada Paciente', 'Falta Terapeuta', 'Falta Justificada Terapeuta', 'Recessos e Feriados', 'Manutenção Predial', 'Reposição', 'Falta', 'Falta Justificada']))
+      .snapshotChanges().pipe(take(1),
+        map(actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          })
+        })
+      )
+  }
+
+  getSessoesAgendadas(crp: string) {
+    return this.afs.collection<Sessao>('Sessoes', ref => ref
+      .where('crp', '==', crp)
+      .where('frequencia', '==', '')
+    ).snapshotChanges().pipe(
+      //take(1),
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
@@ -103,10 +130,11 @@ export class SessaoService {
     )
   }
 
-  getSessoesAgendadas(crp: string) {
+  getSessoesSemProntuario(crp: string) {
     return this.afs.collection<Sessao>('Sessoes', ref => ref
       .where('crp', '==', crp)
-      .where('frequencia', '==', '')
+      .where('frequencia', '==', 'Presença')
+      .where('evolucao', '==', '')
     ).snapshotChanges().pipe(
       //take(1),
       map(actions => {

@@ -14,7 +14,8 @@ import { map } from 'rxjs/operators';
 })
 export class SessoesPassadaPage implements OnInit {
 
-  public sessaoSubscription: Subscription;  
+  public sessaoSubscription: Subscription; 
+  public sessaoTempSubscription: Subscription;  
   public sessoes = new Array<Sessao>();
   public nomePsicologo = "";
   public crp = "";
@@ -53,7 +54,8 @@ export class SessoesPassadaPage implements OnInit {
             let dataCompletaB = new Date([b.ano,b.mes,b.dia].join("-") + " " + b.horaSessao);
             return  dataCompletaA < dataCompletaB ? -1 : 1;
           });
-    
+
+          //this.alterarPresenca(this.sessoes);
         });
       }
   
@@ -67,7 +69,26 @@ export class SessoesPassadaPage implements OnInit {
 
   ngOndestroy() {
     if(this.sessaoSubscription) this.sessaoSubscription.unsubscribe();
-  } 
+  }
+
+  alterarPresenca(sessoes:any){
+    // let sessao: Sessao = sessoes.filter(s => s.id == "DwnwFcK7JiXYqMMiSgrA"); 
+    // console.log("sessao",sessao);
+    // sessao.frequencia = "Falta";
+    // sessao.conteudo = "";
+    // sessao.evolucao = "";
+
+    //this.sessaoService.updateSessao(sessao.id,sessao);
+
+    // id do miguel souza "fWYTEaJozPHcyYVt8YdV"
+    // dia da sessao  "DwnwFcK7JiXYqMMiSgrA"
+
+    // this.sessaoTempSubscription = this.sessaoService.getSessao("DwnwFcK7JiXYqMMiSgrA").subscribe((sessao:Sessao) => {
+    //   console.log("sessao",sessao);
+    //   sessao.frequencia = "Falta";
+    //   this.sessaoService.updateSessao(sessao.id,sessao);
+    // });
+  }
 
 
 }

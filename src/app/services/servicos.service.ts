@@ -61,5 +61,12 @@ export class ServicosService {
   //   return dados;
   // }  
 
+  async presentLoading2Seconds() {
+    const loading = await this.loadingCtrl.create({
+      message: "Por favor, aguarde...",
+      duration: 2000
+    });
+    await loading.present();
+  }
 
 }

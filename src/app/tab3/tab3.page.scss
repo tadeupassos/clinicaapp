@@ -1,3 +1,70 @@
 ion-content ion-toolbar {
   --background: translucent;
 }
+
+.dataSessao {
+  font-size: 10;
+  color: gray;
+}
+
+.convenio {
+  color: #5260ff;
+}
+
+.particular {
+  color: #2dd36f;
+}
+
+.horario {
+  font-size: 20px;
+  color: black;
+}
+
+.paciente {
+  font-size: 15px;
+  color: #000057;
+  padding-left: 0px;
+}
+
+.margemDeCima {
+  margin-left: 10px;
+  padding-top: 8px;
+}
+
+.margemDeBaixo {
+  margin-left: 10px;
+  padding-bottom: 8px;
+}
+
+.dataSemana {
+  font-size: 17px;
+  color: black;
+}
+
+ion-item {
+  --background: aliceblue;
+}
+
+.resumo {
+  border: 1px solid var(--ion-color-primary-shade);;
+  border-radius: 5px;
+  padding: 4px 2px 4px 12px;
+  margin: 5px 10px;
+  font-size: 16px;
+  color: var(--ion-color-primary-shade);
+
+}
+
+.nenhumaSessao {
+  color: gray;
+  font-size: 18px;
+  text-align: center;
+  margin: 160px 27px 0px 27px;
+}
+
+.encontrouSessao {
+  color: black;
+  font-size: 16px;
+  text-align: center;
+  margin: 20px 27px 20px 27px;
+}

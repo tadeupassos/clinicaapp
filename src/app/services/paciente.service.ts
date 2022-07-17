@@ -17,6 +17,7 @@ export class PacienteService {
   }
 
   getPacientes(crp:string){
+    console.log("crp",crp);
     return this.afs.collection<Paciente>('Pacientes', ref => ref
     .where('crp','==',crp))
     .snapshotChanges().pipe(
@@ -24,7 +25,6 @@ export class PacienteService {
         return actions.map(a => {
           const data = a.payload.doc.data();
           const id = a.payload.doc.id;
-
           return {id, ...data };
         })
       })

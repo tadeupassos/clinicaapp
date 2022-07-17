@@ -62,7 +62,7 @@ export class AtendimentoPage implements OnInit {
 
     this.fGroup.get("frequencia").valueChanges.subscribe(item => {
       console.log("frequencia",item);
-      if(item == "Presença"){
+      if(item == "Presença" || item == "Reposição"){
         this.fGroup.controls["conteudo"].setValidators([Validators.required]);
         this.fGroup.controls["conteudo"].updateValueAndValidity();
         this.fGroup.controls["evolucao"].setValidators([Validators.required]);
@@ -82,6 +82,8 @@ export class AtendimentoPage implements OnInit {
       this.sessao = data;
       this.numeroGuia = this.sessao.numeroGuia;
       console.log("this.sessao",this.sessao);
+
+      this.fGroup.get('frequencia').setValue(this.sessao.frequencia);
 
       this.pacienteSubscription = this.pacienteService.getPaciente(this.sessao.pacienteId).subscribe(data => {
         this.paciente = data;

@@ -7,7 +7,7 @@
 .box {
     border: 1px solid black;
     border-radius: 6px;
-    height: 78px;
+    //height: 78px;
     margin: 12px;
     position: relative;
     margin-top: 30px;
@@ -24,23 +24,25 @@
 }
 
 .sessoes {
-    font-size: 18px;
-    text-align: center;
-    padding: 13px 15px 0px;
+    font-size: 15px;
+    text-align: start;
+    padding: 13px 0px 0px 13px;
+    color: #3171e0;
+}
+
+.sessoesPart {
+    font-size: 15px;
+    text-align: start;
     color: #3171e0;
 }
 
 .valor {
-    font-size: 20px;
+    font-size: 15px;
     color: #28ba62;
-    padding-top: 10px;
 }
 
 .valorSub {
-    font-size: 16px;
-    margin-left: -10px;
     color: gray;
-    padding-top: 4px;
 }
 
 .dataFiltro {
@@ -59,4 +61,16 @@
 
 .selecionar {
     width: 145px;
+}
+
+.faltas {
+    color: gray;
+    font-size: 15px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.corC {
+    color: gray;
+    margin-left: 10px;
 }

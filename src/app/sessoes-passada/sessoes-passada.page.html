@@ -15,13 +15,6 @@
       <div style="margin-bottom: 5px;">
         <strong style="color: black">{{ nomePaciente }}</strong>
       </div>
-      <div 
-        [class.colorTipoConvenio]="convenio"  
-        [class.colorTipoParticular]="!convenio"
-      >
-        <strong *ngIf="!convenio">Particular</strong>
-        <strong *ngIf="convenio">Convênio - {{ convenio }}</strong>
-      </div>
     </ion-col>
   </ion-row>
 
@@ -31,6 +24,12 @@
         <strong>{{ s.diaSemana }}, {{ s.horaSessao }},{{ s.dataSessao }}</strong>
       </ion-col>
     </ion-row>
+    <div style="margin-left: 5px;">
+      <!-- [class.colorTipoConvenio]="s.atendimento == 'Convênio'"  
+      [class.colorTipoParticular]="s.atendimento != 'Convênio'"   -->
+      <strong *ngIf="s.atendimento != 'Convênio'" >Particular</strong>
+      <strong *ngIf="s.atendimento == 'Convênio'">Convênio - {{ s.nomeConvenio }}</strong>
+    </div>
     <ion-row>
       <ion-col size="12">
         <ion-label>
